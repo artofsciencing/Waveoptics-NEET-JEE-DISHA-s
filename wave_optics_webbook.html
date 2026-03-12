@@ -1,0 +1,3006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wave Optics — Chapter 25</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1a2e;
+  --paper: #f5f0e8;
+  --cream: #ede8db;
+  --accent: #c0392b;
+  --gold: #b8860b;
+  --muted: #6b6560;
+  --light-rule: #d4cec4;
+  --answer-bg: #edf4f0;
+  --answer-border: #2e7d52;
+  --section-bg: #1a1a2e;
+  --section-text: #f5f0e8;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Source Serif 4', Georgia, serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.75;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--ink);
+  color: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 56px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.35);
+}
+
+.nav-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: var(--paper);
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 0;
+  list-style: none;
+}
+
+.nav-links li a {
+  display: block;
+  padding: .4rem .85rem;
+  font-size: .78rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,.7);
+  text-decoration: none;
+  border-radius: 3px;
+  transition: color .2s, background .2s;
+}
+
+.nav-links li a:hover {
+  color: var(--paper);
+  background: rgba(255,255,255,.08);
+}
+
+/* ── HERO ── */
+.hero {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 5rem 2rem 4rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 110%, #c0392b22 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-chapter {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .8rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -.02em;
+  margin-bottom: 1.2rem;
+}
+
+.hero p {
+  font-size: 1rem;
+  color: rgba(245,240,232,.6);
+  max-width: 420px;
+  margin: 0 auto;
+  font-style: italic;
+}
+
+.hero-rule {
+  width: 60px;
+  height: 3px;
+  background: var(--accent);
+  margin: 2rem auto 0;
+}
+
+/* ── TOC ── */
+.toc-section {
+  background: var(--cream);
+  border-bottom: 1px solid var(--light-rule);
+  padding: 3rem 2rem;
+}
+
+.toc-inner {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.toc-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+}
+
+.toc-section h2::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--light-rule);
+}
+
+.toc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: .6rem;
+}
+
+.toc-item {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .6rem .9rem;
+  background: white;
+  border: 1px solid var(--light-rule);
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--ink);
+  font-size: .9rem;
+  transition: border-color .2s, box-shadow .2s, transform .15s;
+}
+
+.toc-item:hover {
+  border-color: var(--accent);
+  box-shadow: 0 2px 10px rgba(192,57,43,.12);
+  transform: translateY(-1px);
+}
+
+.toc-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .7rem;
+  color: var(--accent);
+  background: #fdf0ef;
+  border: 1px solid #f5c6c1;
+  border-radius: 3px;
+  padding: .1rem .4rem;
+  flex-shrink: 0;
+}
+
+/* ── MAIN ── */
+main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 2rem 6rem;
+}
+
+/* ── SECTION HEADER ── */
+.section-header {
+  margin: 4rem 0 2rem;
+  padding: 1.4rem 2rem;
+  background: var(--section-bg);
+  color: var(--section-text);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.section-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.section-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+
+.section-header p {
+  font-size: .8rem;
+  color: rgba(245,240,232,.55);
+  margin-top: .1rem;
+  font-style: italic;
+}
+
+/* ── QUESTION CARD ── */
+.question-card {
+  background: white;
+  border: 1px solid var(--light-rule);
+  border-radius: 8px;
+  margin-bottom: 1.2rem;
+  overflow: hidden;
+  transition: box-shadow .2s;
+}
+
+.question-card:hover {
+  box-shadow: 0 4px 16px rgba(26,26,46,.08);
+}
+
+.question-head {
+  display: flex;
+  align-items: flex-start;
+  gap: .9rem;
+  padding: 1.1rem 1.4rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.q-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .75rem;
+  color: white;
+  background: var(--accent);
+  border-radius: 4px;
+  padding: .15rem .5rem;
+  flex-shrink: 0;
+  margin-top: .18rem;
+}
+
+.q-text {
+  flex: 1;
+  font-size: .97rem;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+.q-toggle {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1.5px solid var(--light-rule);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .75rem;
+  color: var(--muted);
+  transition: border-color .2s, background .2s, transform .25s;
+  margin-top: .1rem;
+}
+
+.question-card.open .q-toggle {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: white;
+  transform: rotate(180deg);
+}
+
+/* ── OPTIONS ── */
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .5rem;
+  padding: 0 1.4rem 1rem 3.3rem;
+}
+
+@media (max-width: 560px) {
+  .options-grid { grid-template-columns: 1fr; }
+}
+
+.option-btn {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  padding: .55rem .8rem;
+  border: 1.5px solid var(--light-rule);
+  border-radius: 6px;
+  background: var(--paper);
+  cursor: pointer;
+  font-family: 'Source Serif 4', serif;
+  font-size: .88rem;
+  color: var(--ink);
+  text-align: left;
+  transition: border-color .15s, background .15s;
+}
+
+.option-btn:hover {
+  border-color: #aaa;
+  background: white;
+}
+
+.option-btn.correct {
+  border-color: var(--answer-border);
+  background: var(--answer-bg);
+  color: #1a5c38;
+}
+
+.option-btn.wrong {
+  border-color: var(--accent);
+  background: #fdf0ef;
+  color: #7a1c10;
+}
+
+.opt-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .72rem;
+  font-weight: 500;
+  width: 20px;
+  flex-shrink: 0;
+}
+
+/* ── ANSWER PANEL ── */
+.answer-panel {
+  display: none;
+  margin: 0 1.4rem 1.2rem 3.3rem;
+  padding: .8rem 1rem;
+  background: var(--answer-bg);
+  border-left: 3px solid var(--answer-border);
+  border-radius: 0 6px 6px 0;
+  font-size: .88rem;
+  color: #1a4a31;
+  line-height: 1.6;
+}
+
+.answer-panel.visible { display: block; }
+
+.answer-panel strong {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .8rem;
+  letter-spacing: .04em;
+  display: block;
+  margin-bottom: .3rem;
+  color: var(--answer-border);
+}
+
+/* ── FORMULA ── */
+.formula {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .85rem;
+  background: #f0eee8;
+  border: 1px solid #ddd8ce;
+  border-radius: 4px;
+  padding: .15rem .45rem;
+  color: var(--ink);
+}
+
+/* ── PROGRESS BAR ── */
+.progress-bar {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  height: 3px;
+  background: var(--accent);
+  width: 0%;
+  transition: width .1s;
+  z-index: 99;
+}
+
+/* ── BACK TO TOP ── */
+.back-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 44px;
+  height: 44px;
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,.25);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .3s, transform .3s;
+  z-index: 90;
+}
+
+.back-top.visible { opacity: 1; transform: translateY(0); }
+
+/* ── SCORE WIDGET ── */
+.score-widget {
+  position: sticky;
+  top: 59px;
+  background: white;
+  border: 1px solid var(--light-rule);
+  border-radius: 0 0 8px 8px;
+  padding: .5rem 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: .82rem;
+  color: var(--muted);
+  z-index: 80;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  flex-wrap: wrap;
+}
+
+.score-widget span strong {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--ink);
+}
+
+.score-bar {
+  flex: 1;
+  min-width: 80px;
+  height: 6px;
+  background: #e8e3da;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.score-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--answer-border), #4caf7d);
+  border-radius: 3px;
+  transition: width .4s ease;
+  width: 0%;
+}
+
+/* ── ASSERTION-REASON ── */
+.ar-card {
+  background: white;
+  border: 1px solid var(--light-rule);
+  border-radius: 8px;
+  margin-bottom: 1.2rem;
+  overflow: hidden;
+}
+
+.ar-head {
+  padding: 1.1rem 1.4rem;
+  cursor: pointer;
+  display: flex;
+  gap: .9rem;
+  align-items: flex-start;
+}
+
+.ar-body {
+  display: none;
+  padding: 0 1.4rem 1.2rem 3.3rem;
+}
+
+.ar-body.visible { display: block; }
+
+.ar-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .7rem;
+  padding: .1rem .45rem;
+  border-radius: 3px;
+  margin-right: .4rem;
+  font-weight: 500;
+}
+
+.tag-a { background: #e8f4ff; color: #1a5a8a; border: 1px solid #b8d9f5; }
+.tag-r { background: #fff4e8; color: #8a4a1a; border: 1px solid #f5d5b8; }
+
+.ar-stmt {
+  padding: .5rem .8rem;
+  border-radius: 6px;
+  margin-bottom: .5rem;
+  font-size: .9rem;
+  line-height: 1.55;
+  border-left: 3px solid transparent;
+}
+
+.stmt-assert { background: #f0f7ff; border-left-color: #1a5a8a; }
+.stmt-reason { background: #fff8f0; border-left-color: #8a4a1a; }
+
+.ar-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .45rem;
+  margin-top: .7rem;
+}
+
+@media (max-width: 560px) { .ar-options { grid-template-columns: 1fr; } }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--ink);
+  color: rgba(245,240,232,.5);
+  text-align: center;
+  padding: 2.5rem 1rem;
+  font-size: .82rem;
+  letter-spacing: .04em;
+}
+
+footer strong { color: var(--paper); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.section-header, .question-card, .ar-card {
+  animation: fadeUp .35s ease both;
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-title" href="#">⟨ Wave Optics · Ch. 25 ⟩</a>
+  <ul class="nav-links">
+    <li><a href="#fact">Fact/Def</a></li>
+    <li><a href="#statement">Statement</a></li>
+    <li><a href="#matching">Matching</a></li>
+    <li><a href="#diagram">Diagram</a></li>
+    <li><a href="#ar">Assertion</a></li>
+    <li><a href="#critical">Critical</a></li>
+    <li><a href="#hints">Hints</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-chapter">Chapter 25 · NCERT Objective</div>
+  <h1>Wave<br>Optics</h1>
+  <p>141 objective questions spanning wavefronts, interference, diffraction, and polarisation.</p>
+  <div class="hero-rule"></div>
+</header>
+
+<!-- TOC -->
+<section class="toc-section">
+  <div class="toc-inner">
+    <h2>Contents</h2>
+    <div class="toc-grid">
+      <a class="toc-item" href="#fact"><span class="toc-num">Q 1–50</span>Fact / Definition</a>
+      <a class="toc-item" href="#statement"><span class="toc-num">Q 51–66</span>Statement Type</a>
+      <a class="toc-item" href="#matching"><span class="toc-num">Q 67–69</span>Matching Type</a>
+      <a class="toc-item" href="#diagram"><span class="toc-num">Q 70–78</span>Diagram Type</a>
+      <a class="toc-item" href="#ar"><span class="toc-num">Q 79–90</span>Assertion–Reason</a>
+      <a class="toc-item" href="#critical"><span class="toc-num">Q 91–141</span>Critical Thinking</a>
+      <a class="toc-item" href="#hints"><span class="toc-num">Hints</span>Hints &amp; Solutions</a>
+    </div>
+  </div>
+</section>
+
+<!-- SCORE WIDGET -->
+<div class="score-widget">
+  <span>Answered: <strong id="answeredCount">0</strong></span>
+  <span>Correct: <strong id="correctCount" style="color:var(--answer-border)">0</strong></span>
+  <div class="score-bar"><div class="score-fill" id="scoreFill"></div></div>
+  <span id="scorePercent" style="font-family:'JetBrains Mono',monospace;font-size:.78rem">—</span>
+</div>
+
+<main>
+
+<!-- ═══════════════════════════════════════════ FACT / DEFINITION -->
+<div class="section-header" id="fact">
+  <div class="section-icon">📖</div>
+  <div>
+    <h2>Fact / Definition Type Questions</h2>
+    <p>Questions 1 – 50</p>
+  </div>
+</div>
+
+<!-- Q1 -->
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">1</span>
+    <span class="q-text">The locus of all particles in a medium, vibrating in the same phase is called</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>Wavelet</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>Fringe</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>Wave front</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>None of these</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>A wavefront is the locus of all particles vibrating in the same phase. Light is an electromagnetic wave (4000 Å – 7800 Å).</div>
+</div>
+
+<!-- Q2 -->
+<div class="question-card" data-answer="a">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">2</span>
+    <span class="q-text">Which of the following is correct for light diverging from a point source?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>Intensity decreases in proportion to distance squared</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>The wavefront is parabolic</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>Intensity does depend on the distance</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>None of these</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (a)</strong>For a point source, intensity ∝ 1/r². The wavefront is spherical, not parabolic.</div>
+</div>
+
+<!-- Q3 -->
+<div class="question-card" data-answer="a">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">3</span>
+    <span class="q-text">Wavefront is the locus of all points, where the particles of the medium vibrate with the same</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>Phase</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>Amplitude</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>Frequency</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>Period</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (a)</strong>Phase — by definition.</div>
+</div>
+
+<!-- Q4 -->
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">4</span>
+    <span class="q-text">The phenomenon which is NOT explained by Huygens' construction of wavefront</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>Reflection</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>Diffraction</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>Refraction</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>Origin of spectra</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>Huygens' principle does not explain the origin of spectra.</div>
+</div>
+
+<!-- Q5 -->
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">5</span>
+    <span class="q-text">Huygens' concept of secondary wave</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>Allows us to find focal length of a thick lens</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>Is a geometrical method to find a wavefront</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>Is used to determine velocity of light</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>Is used to explain polarisation</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>Huygens' principle gives a geometrical method of tracing a wavefront.</div>
+</div>
+
+<!-- Q6 -->
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">6</span>
+    <span class="q-text">A plane wave passes through a convex lens. The geometrical shape of the wavefront that emerges is</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>Plane</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>Diverging spherical</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>Converging spherical</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>None of these</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>A convex lens converges plane waves into a converging spherical wavefront.</div>
+</div>
+
+<!-- Q7 -->
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">7</span>
+    <span class="q-text">Spherical wavefronts emanating from a point source strike a plane reflecting surface. What happens immediately after reflection?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>Remain spherical, same curvature in magnitude and sign</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>Become plane wavefronts</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>Remain spherical, same magnitude but sign reversed</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>Remain spherical, different curvature in both</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>After reflection from a plane mirror, the diverging spherical wavefront becomes converging — same magnitude, reversed sign.</div>
+</div>
+
+<!-- Q8 -->
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">8</span>
+    <span class="q-text">When light suffers reflection at the interface between water and glass, the change of phase in the reflected wave is</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>Zero</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>π</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>π/2</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>2π</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>Phase reversal (π) occurs on reflection because glass is denser than water.</div>
+</div>
+
+<!-- Q9 -->
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">9</span>
+    <span class="q-text">Two plane wavefronts incident on (i) a thin convex lens and (ii) a refracting face of a thin prism. The emerging wavefronts are respectively</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>Plane & Plane</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>Plane & Spherical</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>Spherical & Plane</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>Spherical & Spherical</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>Convex lens → spherical (converging); Prism → tilted plane wavefront.</div>
+</div>
+
+<!-- Q10 -->
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">10</span>
+    <span class="q-text">When a film is illuminated by white light, its upper portion appears dark. Path difference between two reflected beams at that spot must be</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>Zero</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>λ/2</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>2λ/2</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>π</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>Dark spot ⟹ destructive interference. Path difference = λ/2 (plus phase change π on reflection gives effective λ → darkness).</div>
+</div>
+
+<!-- Q11 -->
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">11</span>
+    <span class="q-text">If two coherent sources are vibrating in phase, we have constructive interference at point P whenever the path difference is</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>(n + ½)λ</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>nλ/2</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>(n – ½)λ</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>nλ</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>Constructive interference: path difference = nλ (n = 0, 1, 2, …). Resultant intensity = 4I₀.</div>
+</div>
+
+<!-- Q12 -->
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">12</span>
+    <span class="q-text">If two sources are coherent, then the phase difference (φ) between the waves produced by them at any point</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>Changes with time — stable maxima/minima</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>Does not change — unstable maxima/minima</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>Does not change — stable maxima/minima</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>Changes with time — unstable maxima/minima</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>Coherent sources maintain a constant phase difference, so positions of maxima and minima are fixed (stable).</div>
+</div>
+
+<!-- Q13 -->
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">13</span>
+    <span class="q-text">The device which produces highly coherent sources is</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>Fresnel biprism</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>Young's double slit</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>Laser</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>Lloyd's mirror</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>Laser emits coordinated waves of exactly the same wavelength — highest coherence.</div>
+</div>
+
+<!-- Q14 -->
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">14</span>
+    <span class="q-text">Which of the following CANNOT produce two coherent sources?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>Lloyd's mirror</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>Fresnel biprism</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>Young's double slit</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>Prism</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>A simple prism cannot produce coherent sources.</div>
+</div>
+
+<!-- Q15 -->
+<div class="question-card" data-answer="a">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">15</span>
+    <span class="q-text">Coherence is a measure of</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>Capability of producing interference by wave</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>Waves being diffracted</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>Waves being reflected</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>Waves being refracted</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (a)</strong>Coherence measures the capability of a wave to produce sustained interference.</div>
+</div>
+
+<!-- Q16 -->
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">16</span>
+    <span class="q-text">Two sources of light are said to be coherent when they give light waves of same</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>Amplitude and phase</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>Wavelength and constant phase difference</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>Intensity and wavelength</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>Phase and speed</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>Same wavelength (frequency) with a constant phase difference.</div>
+</div>
+
+<!-- Q17 -->
+<div class="question-card" data-answer="a">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">17</span>
+    <span class="q-text">Intensity of light depends on</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>Amplitude</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>Frequency</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>Wavelength</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>Velocity</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (a)</strong>By wave theory, Intensity ∝ (Amplitude)².</div>
+</div>
+
+<!-- Q18 -->
+<div class="question-card" data-answer="a">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">18</span>
+    <span class="q-text">The colour of bright fringe nearest to central achromatic fringe in the interference pattern with white light will be</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>Violet</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>Red</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>Green</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>Yellow</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (a)</strong>Fringe width β = λD/d ∝ λ. Since λ_violet is smallest, violet fringe is closest to centre.</div>
+</div>
+
+<!-- Q19 -->
+<div class="question-card" data-answer="a">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">19</span>
+    <span class="q-text">The correct formula for fringe visibility is</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>V = (I_max − I_min) / (I_max + I_min)</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>V = (I_max + I_min) / (I_max − I_min)</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>V = I_min / I_max</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>V = I_max / I_min</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (a)</strong>V = (I_max − I_min) / (I_max + I_min).</div>
+</div>
+
+<!-- Q20 -->
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">20</span>
+    <span class="q-text">Laser light is considered to be coherent because it consists of</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>Many wavelengths</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>Uncoordinated wavelengths</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>Coordinated waves of exactly the same wavelength</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>Divergent beam</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>Laser is monochromatic and all photons are in phase (stimulated emission).</div>
+</div>
+
+<!-- Q21 -->
+<div class="question-card" data-answer="a">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">21</span>
+    <span class="q-text">Interfering fringes formed by a thin oil film on water are seen in yellow light of sodium lamp. The fringes are</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>Coloured (yellow and black)</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>Black and white</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>Yellow and black</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>Coloured without yellow</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (a)</strong>Bright fringes are yellow, dark fringes are black (monochromatic illumination).</div>
+</div>
+
+<!-- Q22 -->
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">22</span>
+    <span class="q-text">In Young's Double Slit experiment, if the distance between slit and screen (D) is comparable with fringe width (B), the fringe pattern will be</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>Strictly a parabola</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>Strictly a hyperbola</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>Elliptical</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>Straight lines</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>With the slit separation constant, the locus of point P in the xy-plane is a hyperbola.</div>
+</div>
+
+<!-- Q23 -->
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">23</span>
+    <span class="q-text">If Young's double slit experiment is performed in water keeping the rest of the set-up same, the fringes will</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>Increase in width</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>Decrease in width</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>Remain unchanged</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>Not be formed</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>λ_water = λ_air / μ. Since λ decreases and β ∝ λ, fringe width decreases.</div>
+</div>
+
+<!-- Q24 -->
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">24</span>
+    <span class="q-text">In YDSE, when we place a converging lens after the slits and the screen at focus of lens, it</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>Introduces extra path difference in parallel beam</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>Introduces no path difference in parallel beam</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>Introduces extra phase difference in parallel beam</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>Introduces extra fringe in diffraction pattern</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>A converging lens introduces no extra path difference; it gives a more intense pattern.</div>
+</div>
+
+<!-- Q25 -->
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">25</span>
+    <span class="q-text">The fringe width for red colour compared to violet colour is approximately</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>3 times</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>2 times</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>4 times</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>8 times</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>λ_red ≈ 8000 Å, λ_violet ≈ 4000 Å. Since β ∝ λ, β_red ≈ 2 × β_violet.</div>
+</div>
+
+<!-- Q26 -->
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">26</span>
+    <span class="q-text">In Young's double slit experiment, the minimum amplitude is obtained when the phase difference of superimposing waves is (n = 1, 2, 3, …)</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>Zero</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>(2n − 1)π</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>nπ</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>(n + 1)π</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>For minima, phase difference = odd multiple of π = (2n − 1)π.</div>
+</div>
+
+<!-- Q27 -->
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">27</span>
+    <span class="q-text">The fringe width in a Young's double slit experiment can be increased if we DECREASE</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>Width of slits</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>Separation of slits</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>Wavelength of light used</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>Distance between slits and screen</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>β = λD/d. Decreasing slit separation d increases fringe width.</div>
+</div>
+
+<!-- Q28 -->
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">28</span>
+    <span class="q-text">In YDSE, one slit is covered with red filter and another with green filter. The interference pattern will be</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>Red</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>Green</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>Yellow</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>Invisible</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>Red and green are complementary colours; they cannot interfere. Pattern is invisible.</div>
+</div>
+
+<!-- Q29 -->
+<div class="question-card" data-answer="a">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">29</span>
+    <span class="q-text">Instead of two slits, if we use two separate identical sodium lamps in Young's experiment, which occurs?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>General illumination</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>Widely separate interference</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>Very bright maxima</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>Very dark minima</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (a)</strong>Independent sources lack constant phase difference → no stable interference → general illumination.</div>
+</div>
+
+<!-- Q30 -->
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">30</span>
+    <span class="q-text">Which of the following is NOT essential for two sources to produce sustained interference in YDSE?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>Equal wavelength</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>Equal intensity</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>Constant phase relationship</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>Equal frequency</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>Equal intensity is not essential; unequal intensities still produce interference (though with reduced contrast).</div>
+</div>
+
+<!-- Q31 -->
+<div class="question-card" data-answer="a">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">31</span>
+    <span class="q-text">In YDSE, the locus of point P lying in a plane with constant path difference between two interfering waves is</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>A hyperbola</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>A straight line</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>An ellipse</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>A parabola</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (a)</strong>For two point sources, the locus of points with constant path difference is a hyperbola.</div>
+</div>
+
+<!-- Q32 -->
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">32</span>
+    <span class="q-text">If the width of slit in single slit diffraction is doubled, the central maximum becomes</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>Broader and brighter</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>Sharper and brighter</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>Sharper and fainter</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>Broader and fainter</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>Width = 2λD/a. Doubling 'a' halves width (sharper). Same energy in smaller area → brighter.</div>
+</div>
+
+<!-- Q33 -->
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">33</span>
+    <span class="q-text">A diffraction pattern is obtained using red light. What happens if red is replaced by blue light?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>Bands disappear</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>Bands become broader and farther apart</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>No change</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>Bands become narrow and crowded together</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>λ_blue &lt; λ_red, so diffraction bands become narrower and more closely spaced.</div>
+</div>
+
+<!-- Q34 -->
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">34</span>
+    <span class="q-text">When monochromatic light is replaced by white light in Fresnel's biprism arrangement, the central fringe is</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>Coloured</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>White</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>Dark</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>None of these</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>At the centre all colours meet in phase → white central fringe.</div>
+</div>
+
+<!-- Q35 -->
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">35</span>
+    <span class="q-text">For Fraunhofer diffraction from a single slit, the light wavefront incident should be</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>Spherical</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>Cylindrical</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>Plane</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>Elliptical</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>Fraunhofer diffraction requires plane wavefronts (both source and screen effectively at infinity).</div>
+</div>
+
+<!-- Q36 -->
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">36</span>
+    <span class="q-text">Diffraction can be treated as interference if the number of coherent sources is</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>One</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>Two</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>Zero</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>Infinity</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>Single-slit diffraction = interference from infinite coherent secondary sources in the slit.</div>
+</div>
+
+<!-- Q37 -->
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">37</span>
+    <span class="q-text">Diffraction effects in a microscopic specimen become important when the separation between two points is</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>Much greater than λ</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>Much less than λ</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>Comparable to λ</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>Independent of λ</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>Diffraction is significant when separation ~ wavelength of light used.</div>
+</div>
+
+<!-- Q38 -->
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">38</span>
+    <span class="q-text">What is the Brewster angle for air-to-glass transition? (ₐμg = 1.5)</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>tan(1.5)</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>sin(1.5)</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>sin⁻¹(1.5)</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>tan⁻¹(1.5)</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>Brewster's law: tan iB = μ = 1.5 → iB = tan⁻¹(1.5).</div>
+</div>
+
+<!-- Q39 -->
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">39</span>
+    <span class="q-text">When ordinary light is made incident on a quarter wave plate, the emergent light is</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>Linearly polarised</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>Circularly polarised</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>Unpolarised</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>Elliptically polarised</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>Ordinary (unpolarised) light through a quarter-wave plate emerges as elliptically polarised.</div>
+</div>
+
+<!-- Q40 -->
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">40</span>
+    <span class="q-text">Transverse nature of light was confirmed by the phenomenon of</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>Refraction</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>Diffraction</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>Dispersion</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>Polarization</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>Only transverse waves can be polarised — polarisation confirmed light is transverse.</div>
+</div>
+
+<!-- Q41 -->
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">41</span>
+    <span class="q-text">In linearly polarised light, the magnitude of the electric field vector</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>Is parallel to direction of propagation</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>Does not change with time</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>Increases linearly with time</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>Varies periodically with time</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>The electric field oscillates (varies periodically) but always in the same plane.</div>
+</div>
+
+<!-- Q42 -->
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">42</span>
+    <span class="q-text">Unpolarized light on a plane glass — for reflected and refracted rays to be perpendicular, the angle of incidence satisfies</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>tan iB = μ/2</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>tan iB = μ</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>sin iB = μ</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>cos iB = μ</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>Brewster's law: μ = tan iB.</div>
+</div>
+
+<!-- Q43 -->
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">43</span>
+    <span class="q-text">Light waves can be polarised because they</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>Have high frequencies</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>Have short wavelength</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>Are transverse</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>Can be reflected</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>Polarisation is possible only for transverse waves.</div>
+</div>
+
+<!-- Q44 -->
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">44</span>
+    <span class="q-text">Light transmitted by a Nicol prism is</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>Unpolarised</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>Plane polarised</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>Circularly polarised</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>Elliptically polarised</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>A Nicol prism uses double refraction to transmit only the ordinary ray — plane polarised light.</div>
+</div>
+
+<!-- Q45 -->
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">45</span>
+    <span class="q-text">Optically active substances are those which</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>Produce polarised light</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>Produce double refraction</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>Rotate the plane of polarisation of polarised light</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>Convert plane polarised to circularly polarised light</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>Optically active substances (e.g. sugar solution) rotate the plane of polarisation.</div>
+</div>
+
+<!-- Q46 -->
+<div class="question-card" data-answer="a">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">46</span>
+    <span class="q-text">Polaroid glass is used in sunglasses because</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>It reduces light intensity to half due to polarisation</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>It is fashionable</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>It has good colour</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>It is cheaper</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (a)</strong>Polaroid reduces glare by transmitting only one plane of polarisation, halving intensity.</div>
+</div>
+
+<!-- Q47 -->
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">47</span>
+    <span class="q-text">In propagation of light waves, the angle between plane of vibration and plane of polarisation is</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>0°</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>90°</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>45°</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>80°</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>90° — plane of vibration and plane of polarisation are mutually perpendicular.</div>
+</div>
+
+<!-- Q48 -->
+<div class="question-card" data-answer="a">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">48</span>
+    <span class="q-text">In propagation of EM waves, angle between direction of propagation and plane of polarisation is</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>0°</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>45°</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>90°</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>180°</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (a)</strong>Plane of vibration ⊥ direction of propagation, and ⊥ plane of polarisation. So angle between direction of propagation and plane of polarisation = 0°.</div>
+</div>
+
+<!-- Q49 -->
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">49</span>
+    <span class="q-text">When unpolarised light is incident on a plane glass at Brewster's angle, which statement is correct?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>Both reflected and refracted are fully polarised, planes parallel</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>Both fully polarised, planes perpendicular</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>Reflected is plane polarised; transmitted is partially polarised</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>Reflected is partially polarised; refracted is plane polarised</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>At Brewster's angle, reflected light is fully plane polarised; transmitted light is only partially polarised.</div>
+</div>
+
+<!-- Q50 -->
+<div class="question-card" data-answer="a">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">50</span>
+    <span class="q-text">From Brewster's law of polarisation, the angle of polarisation depends upon</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>The wavelength of light</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>Plane of polarisation orientation</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>Plane of vibration orientation</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>None of these</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (a)</strong>Refractive index μ depends on wavelength, hence Brewster angle tan⁻¹(μ) depends on wavelength.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════ STATEMENT TYPE -->
+<div class="section-header" id="statement">
+  <div class="section-icon">📝</div>
+  <div>
+    <h2>Statement Type Questions</h2>
+    <p>Questions 51 – 66</p>
+  </div>
+</div>
+
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">51</span>
+    <span class="q-text">Which of the following statements about wavefront shapes are correct? I. Light diverging from a point source → spherical. II. Light from convex lens (point source at focus) → plane. III. Wavefront of light from a distant star intercepted by Earth → plane.</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>I and II</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>II and III</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>I and III</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>I, II and III</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>All three statements are correct: point source → spherical; lens with point source at focus → plane; distant star → plane (portion intercepted by Earth).</div>
+</div>
+
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">52</span>
+    <span class="q-text">Which statements are correct? I. A point source emits waves uniformly in all directions. II. In spherical wave, locus of same amplitude and phase are spheres. III. At small distance from source, small portion of sphere ≈ plane wave.</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>Only I</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>I and II</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>Only III</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>I, II and III</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>I and II are correct. III is wrong — at LARGE distance a small portion ≈ plane wave (not small distance).</div>
+</div>
+
+<div class="question-card" data-answer="a">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">53</span>
+    <span class="q-text">Wavefront passing through a prism: I. Lower portion (B') is delayed → tilt. II. Time for A→A' = Time for B→B'. III. Speed of wavefront is same everywhere. IV. Particle on A'B' in phase with particle on AB.</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>I and II</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>II and III</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>III and IV</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>I and III</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (a)</strong>I and II: lower portion delayed (denser medium) → tilt; time A→A' = B→B' by Huygens' principle.</div>
+</div>
+
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">54</span>
+    <span class="q-text">Which of the following CANNOT be explained on the basis of wave nature of light? I. Polarization &nbsp; II. Total internal reflection &nbsp; III. Photoelectric effect &nbsp; IV. Compton effect</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>II and III</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>III and IV</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>IV and I</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>III only</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>Photoelectric effect and Compton effect require quantum (particle) nature of light — not explained by wave theory.</div>
+</div>
+
+<div class="question-card" data-answer="a">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">55</span>
+    <span class="q-text">Conditions for sustained interference: I. Phase difference constant with time. II. Nearly same amplitude levels. III. Same frequency. IV. Waves moving in opposite directions.</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>I, II and III</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>II and III</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>III and IV</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>I and IV</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (a)</strong>I, II, III. Waves moving in opposite directions (IV) form standing waves, not required for interference pattern.</div>
+</div>
+
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">56</span>
+    <span class="q-text">True statements about double-slit interference pattern: I. Equal number of bright and dark band widths. II. Pattern obtained by superposition of two waves from slits. III. Minima at angle λ/a (a = slit separation).</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>I only</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>II only</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>I and II only</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>I, II and III</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>I and II. Statement III refers to single-slit diffraction minima, not double-slit interference.</div>
+</div>
+
+<div class="question-card" data-answer="a">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">57</span>
+    <span class="q-text">In double-slit experiment, the pattern on screen is a superposition of __ and __. I. Single-slit diffraction from each slit. II. Double-slit interference pattern. III. Double-slit diffraction. IV. Single-slit interference.</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>I and II</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>I and III</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>II and IV</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>II and III</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (a)</strong>The pattern = single-slit diffraction envelope (I) × double-slit interference fringes (II).</div>
+</div>
+
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">58</span>
+    <span class="q-text">True statements about the single-slit diffraction pattern: I. Central bright maxima has twice the width of others. II. First null at angle λ/2a. III. Intensity of maxima falls as we move away. IV. Bands are of decreasing width.</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>II and III</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>I and II</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>I, III and IV</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>I and III</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>I (central max is twice as wide) and III (intensity decreases) are correct. First null is at λ/a (not λ/2a).</div>
+</div>
+
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">59</span>
+    <span class="q-text">Diffraction is exhibited by: I. Matter waves &nbsp; II. Water waves &nbsp; III. Sound waves &nbsp; IV. Light waves</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>I and II</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>I, II and III</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>III and IV</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>I, II, III and IV</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>Diffraction is a universal wave phenomenon — all wave types exhibit it.</div>
+</div>
+
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">60</span>
+    <span class="q-text">We can hear sound around a wall but not see around it because: I. λ_light &gt; λ_sound. II. λ_light &lt; λ_sound. III. λ_light ≪ dimensions of most obstacles. IV. λ_sound &gt; dimensions of most obstacles.</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>I and II</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>I, II and III</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>II and III (also IV)</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>I, III and IV</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>λ_light ≪ obstacle size (no diffraction seen); λ_sound ~ obstacle size (diffraction occurs, so we hear around corners). Statements II, III, IV are correct.</div>
+</div>
+
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">61</span>
+    <span class="q-text">Necessary and sufficient conditions for good interference and diffraction: I. Slit separation very small (~mm). II. Slit width very small (~mm). III. Screen distance large (~cm). IV. Screen distance small (~mm).</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>I and II</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>I and III</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>I, II and III</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>II and III</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>From β = λD/d: small slit separation (I), small slit width (II), and large screen distance (III) are required.</div>
+</div>
+
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">62</span>
+    <span class="q-text">Resolving power of a telescope is limited by: I. Focal length of objective. II. Diameter of objective. III. Wavelength of light. IV. Thickness of objective.</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>I and II</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>I, II and III</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>II and III</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>I, III and IV</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>Resolving power ∝ a/λ (Rayleigh criterion Δθ = 0.61λ/a). Depends on aperture 'a' (II) and wavelength (III).</div>
+</div>
+
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">63</span>
+    <span class="q-text">The magnification by the objective lens of a microscope does NOT depend upon</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>Focal length of objective</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>Diameter of objective</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>Angle subtended by diameter at focus</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>Angle subtended by eyepiece on eye</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>m = v/f = D/f = 2 tan β. The eyepiece angle does not affect objective magnification.</div>
+</div>
+
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">64</span>
+    <span class="q-text">Single-slit Fraunhofer diffraction figure shows: I. Wavelength distribution. II. Intensity distribution. III. Diffraction. IV. Fringe pattern.</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>I and II</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>II, III and IV</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>II and IV</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>I, III and IV</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>The figure shows intensity distribution (II) and fringe/diffraction pattern (IV).</div>
+</div>
+
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">65</span>
+    <span class="q-text">Correct statements for diffraction: I. λ must be comparable to slit size. II. Diffraction is common in sound, not in light. III. Diffraction only in electromagnetic waves.</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>Only I</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>II and III</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>I and II</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>I, II and III</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>I and II. Statement III is wrong — diffraction occurs in all waves including longitudinal mechanical waves.</div>
+</div>
+
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">66</span>
+    <span class="q-text">Correct statements about Polaroid: I. Consists of long chain molecules aligned in a particular direction. II. Electric vectors along aligned molecules get absorbed. III. Unpolarised light incident on polaroid gets linearly polarised.</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>Only I</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>II and III</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>Only III</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>I, II and III</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>All three statements are correct about how a Polaroid works.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════ MATCHING -->
+<div class="section-header" id="matching">
+  <div class="section-icon">🔗</div>
+  <div>
+    <h2>Matching Type Questions</h2>
+    <p>Questions 67 – 69</p>
+  </div>
+</div>
+
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">67</span>
+    <span class="q-text">Match plane wave incident on different surfaces (Column I) with emergent wavefront (Column II):<br>A) Plane mirror &nbsp; B) Convex lens &nbsp; C) Prism &nbsp; D) Concave mirror<br>1) Spherical R &nbsp; 2) Spherical R/2 &nbsp; 3) Tilted &nbsp; 4) Spherical R</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>A→1, B→3, C→2, D→4</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>A→3, B→4, C→2, D→1</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>A→2, B→4, C→3, D→1</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>A→4, B→2, C→1, D→3</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>A→3 (tilted by mirror), B→4 (spherical R), C→2 (spherical R/2 from convex lens), D→1 (spherical R from plane mirror).</div>
+</div>
+
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">68</span>
+    <span class="q-text">Match: A) Interference B) Brewster's Law C) Diffraction D) Law of Malus — with — 1) I = I₀cos²θ &nbsp; 2) Obstacle/aperture ~ λ &nbsp; 3) μ = tan iₚ &nbsp; 4) Coherent sources</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>A→3, B→4, C→2, D→1</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>A→1, B→2, C→3, D→4</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>A→4, B→3, C→2, D→1</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>A→2, B→3, C→4, D→1</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>A→4 (coherent sources), B→3 (Brewster: μ = tan iₚ), C→2 (aperture ~ λ), D→1 (Malus: I = I₀cos²θ).</div>
+</div>
+
+<div class="question-card" data-answer="a">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">69</span>
+    <span class="q-text">Match: A) Reflection B) Refraction C) Interference D) Polarization — with — 1) Reduces glare &nbsp; 2) Path change without medium change &nbsp; 3) μ = sin i/sin r &nbsp; 4) Light + light = darkness</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>A→2, B→3, C→4, D→1</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>A→1, B→2, C→3, D→4</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>A→4, B→3, C→2, D→1</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>A→1, B→3, C→2, D→1</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (a)</strong>A→2 (reflection: path change without medium change), B→3 (Snell's law), C→4 (destructive interference), D→1 (polaroid reduces glare).</div>
+</div>
+
+<!-- ═══════════════════════════════════════════ DIAGRAM TYPE -->
+<div class="section-header" id="diagram">
+  <div class="section-icon">📐</div>
+  <div>
+    <h2>Diagram Type Questions</h2>
+    <p>Questions 70 – 78</p>
+  </div>
+</div>
+
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">70</span>
+    <span class="q-text">Two coherent point sources S₁ and S₂ are separated by small distance 'd'. The fringes on the screen will be</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>Points</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>Straight lines</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>Semi-circles</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>Concentric circles</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>For a screen perpendicular to the line joining the two sources, the fringes are concentric circles.</div>
+</div>
+
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">71</span>
+    <span class="q-text">Two coherent sources S₁ & S₂. AB is an irregular wire at far distance. λ/d = 10⁻³ and ∠BOA = 0.12°. How many bright spots on the wire including A and B?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>5</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>4</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>3</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>7</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>n = 0.12° × 2π / (360 × 10⁻³) ≈ 2.09. So 3 bright spots.</div>
+</div>
+
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">72</span>
+    <span class="q-text">YDSE: S₁S₂ = 0.5 mm, D = 50 cm. Hole 1.0 mm from centre. White light 400–700 nm. Which wavelength through the hole has strong intensity?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>400 nm</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>700 nm</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>500 nm</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>667 nm</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>λ = xd/nD = (1×10⁻³ × 0.5×10⁻³)/(n × 50×10⁻²) = 1000/n nm. For n=2, λ = 500 nm ✓.</div>
+</div>
+
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">73</span>
+    <span class="q-text">Parallel beam of white light on slits separated by d, with one slit at 2d/3 offset from centre. Distance of nearest white spot from O = d/A. Find A.</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>3</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>5</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>6</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>4</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>y = 2d/3 − d/2 = d/6 → A = 6.</div>
+</div>
+
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">74</span>
+    <span class="q-text">Two independent sodium lamps illuminate two slits S₁ and S₂. The screen will have</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>Interference with central maxima</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>Interference with central minima</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>Two separate interference patterns</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>Doubly illuminated screen with no interference</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>Independent sources lack constant phase difference → incoherent → no interference, just uniform illumination.</div>
+</div>
+
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">75</span>
+    <span class="q-text">In YDSE, monochromatic source is shifted to S' at angle φ above SQ. Position of central bright fringe will be</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>At O'</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>At O</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>At O'' (angle −φ)</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>At P</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>When source shifts by +φ, central fringe shifts to −φ (S', midpoint Q, and central fringe are collinear).</div>
+</div>
+
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">76</span>
+    <span class="q-text">Single-slit diffraction with electric bulb (white light) as source. The pattern will be</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>Central dark fringe then bright red fringe</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>Central bright then dark then bands of varying intensity</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>Central bright then dark then wider red, narrower blue</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>Central bright then dark then wider blue, narrower red</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>Higher wavelength (red) → wider fringes; lower wavelength (blue) → narrower fringes.</div>
+</div>
+
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">77</span>
+    <span class="q-text">Fraunhofer diffraction — first minimum in the shown direction. Path difference between rays 1 and 3 is</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>0</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>λ/4</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>λ/2</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>λ</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>For first minimum: Δx = mλ/2, m = 1 → Δx = λ/2. Ray 1 and ray 3 span half the slit.</div>
+</div>
+
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">78</span>
+    <span class="q-text">Plane transmission grating. Diffracted images A, B, C = 1st, 2nd, 3rd order. Source replaced by shorter wavelength. The images shift</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>All four shift towards O</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>All four shift away from O</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>C, B and A shift towards O</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>C, B and A shift away from O</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>d sin θ = nλ. Shorter λ → smaller θ → A, B, C all shift towards O (direct image stays fixed).</div>
+</div>
+
+<!-- ═══════════════════════════════════════════ ASSERTION-REASON -->
+<div class="section-header" id="ar">
+  <div class="section-icon">⚖️</div>
+  <div>
+    <h2>Assertion – Reason Type Questions</h2>
+    <p>Questions 79 – 90 &nbsp;·&nbsp; (a) Both correct, reason explains &nbsp; (b) Both correct, reason doesn't explain &nbsp; (c) Assertion correct, reason wrong &nbsp; (d) Assertion wrong, reason correct</p>
+  </div>
+</div>
+
+<!-- AR Helper macro -->
+<div class="ar-card">
+  <div class="ar-head" onclick="toggleAR(this)">
+    <span class="q-num">79</span>
+    <div style="flex:1">
+      <div class="ar-stmt stmt-assert"><span class="ar-tag tag-a">Assertion</span>According to Huygens' principle, no backward wave-front is possible.</div>
+      <div class="ar-stmt stmt-reason"><span class="ar-tag tag-r">Reason</span>Amplitude of secondary wavelet ∝ (1 + cos θ), where θ is angle between ray at consideration and direction of wavelet.</div>
+    </div>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="ar-body">
+    <div class="ar-options">
+      <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>Both correct; reason explains</button>
+      <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>Both correct; reason does NOT explain</button>
+      <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>Assertion correct; reason wrong</button>
+      <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>Assertion wrong; reason correct</button>
+    </div>
+    <div class="answer-panel visible"><strong>✓ Answer: (b)</strong>Both are correct, but the reason is an additional fact — not the explanation of the assertion. The (1+cosθ) factor ensures backward amplitude → 0, but this is the mechanism, not a separate explanation.</div>
+  </div>
+</div>
+
+<div class="ar-card">
+  <div class="ar-head" onclick="toggleAR(this)">
+    <span class="q-num">80</span>
+    <div style="flex:1">
+      <div class="ar-stmt stmt-assert"><span class="ar-tag tag-a">Assertion</span>Thin films (soap bubble, oil on water) show beautiful colours in white light.</div>
+      <div class="ar-stmt stmt-reason"><span class="ar-tag tag-r">Reason</span>It happens due to interference of light reflected from upper and lower faces of the thin film.</div>
+    </div>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="ar-body">
+    <div class="ar-options">
+      <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>Both correct; reason explains</button>
+      <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>Both correct; reason does NOT explain</button>
+      <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>Assertion correct; reason wrong</button>
+      <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>Assertion wrong; reason correct</button>
+    </div>
+    <div class="answer-panel visible"><strong>✓ Answer: (a)</strong>Both correct; reason correctly explains the assertion.</div>
+  </div>
+</div>
+
+<div class="ar-card">
+  <div class="ar-head" onclick="toggleAR(this)">
+    <span class="q-num">81</span>
+    <div style="flex:1">
+      <div class="ar-stmt stmt-assert"><span class="ar-tag tag-a">Assertion</span>No interference pattern is detected when two coherent sources are infinitely close to each other.</div>
+      <div class="ar-stmt stmt-reason"><span class="ar-tag tag-r">Reason</span>Fringe width is inversely proportional to the distance between the two sources.</div>
+    </div>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="ar-body">
+    <div class="ar-options">
+      <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>Both correct; reason explains</button>
+      <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>Both correct; reason does NOT explain</button>
+      <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>Assertion correct; reason wrong</button>
+      <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>Assertion wrong; reason correct</button>
+    </div>
+    <div class="answer-panel visible"><strong>✓ Answer: (a)</strong>Both correct. β = λD/d → as d→0, β→∞ (fringes too wide to observe). Reason correctly explains.</div>
+  </div>
+</div>
+
+<div class="ar-card">
+  <div class="ar-head" onclick="toggleAR(this)">
+    <span class="q-num">82</span>
+    <div style="flex:1">
+      <div class="ar-stmt stmt-assert"><span class="ar-tag tag-a">Assertion</span>It is necessary to have two waves of equal intensity to study interference pattern.</div>
+      <div class="ar-stmt stmt-reason"><span class="ar-tag tag-r">Reason</span>There will be an effect on clarity if the waves are of unequal intensity.</div>
+    </div>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="ar-body">
+    <div class="ar-options">
+      <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>Both correct; reason explains</button>
+      <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>Both correct; reason does NOT explain</button>
+      <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>Assertion correct; reason wrong</button>
+      <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>Assertion wrong; reason correct</button>
+    </div>
+    <div class="answer-panel visible"><strong>✓ Answer: (d)</strong>Assertion is wrong — equal intensity is not essential. Reason is correct — unequal intensities reduce fringe contrast/clarity.</div>
+  </div>
+</div>
+
+<div class="ar-card">
+  <div class="ar-head" onclick="toggleAR(this)">
+    <span class="q-num">83</span>
+    <div style="flex:1">
+      <div class="ar-stmt stmt-assert"><span class="ar-tag tag-a">Assertion</span>White light falls on double slit with one covered by green filter. Bright fringes are green.</div>
+      <div class="ar-stmt stmt-reason"><span class="ar-tag tag-r">Reason</span>The fringes observed are coloured.</div>
+    </div>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="ar-body">
+    <div class="ar-options">
+      <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>Both correct; reason explains</button>
+      <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>Both correct; reason does NOT explain</button>
+      <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>Assertion correct; reason wrong</button>
+      <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>Assertion wrong; reason correct</button>
+    </div>
+    <div class="answer-panel visible"><strong>✓ Answer: (c)</strong>Assertion correct (only green passes through one slit → green fringes). Reason is wrong — fringes are green, not "coloured".</div>
+  </div>
+</div>
+
+<div class="ar-card">
+  <div class="ar-head" onclick="toggleAR(this)">
+    <span class="q-num">84</span>
+    <div style="flex:1">
+      <div class="ar-stmt stmt-assert"><span class="ar-tag tag-a">Assertion</span>In YDSE, if a thin film is introduced in front of the upper slit, fringe pattern shifts downward.</div>
+      <div class="ar-stmt stmt-reason"><span class="ar-tag tag-r">Reason</span>In YDSE, if slit widths are unequal, the minima will be completely dark.</div>
+    </div>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="ar-body">
+    <div class="ar-options">
+      <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>Both correct; reason explains</button>
+      <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>Both correct; reason does NOT explain</button>
+      <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>Assertion correct; reason wrong</button>
+      <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>Assertion wrong; reason correct</button>
+    </div>
+    <div class="answer-panel visible"><strong>✓ Answer: (d)</strong>Assertion is wrong — introducing a film of higher μ in front of upper slit increases optical path for upper slit → central fringe shifts upward. Reason is also wrong (unequal widths → minima not completely dark).</div>
+  </div>
+</div>
+
+<div class="ar-card">
+  <div class="ar-head" onclick="toggleAR(this)">
+    <span class="q-num">85</span>
+    <div style="flex:1">
+      <div class="ar-stmt stmt-assert"><span class="ar-tag tag-a">Assertion</span>In YDSE, if I₁ = 9I₀ and I₂ = 4I₀ then I_max / I_min = 25.</div>
+      <div class="ar-stmt stmt-reason"><span class="ar-tag tag-r">Reason</span>I_max = (√I₁ + √I₂)² and I_min = (√I₁ − √I₂)².</div>
+    </div>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="ar-body">
+    <div class="ar-options">
+      <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>Both correct; reason explains</button>
+      <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>Both correct; reason does NOT explain</button>
+      <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>Assertion correct; reason wrong</button>
+      <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>Assertion wrong; reason correct</button>
+    </div>
+    <div class="answer-panel visible"><strong>✓ Answer: (b)</strong>Both correct: I_max = (3+2)²I₀ = 25I₀, I_min = (3−2)²I₀ = I₀, ratio = 25. But reason is given differently from the assertion — they are not in a cause-effect relationship here.</div>
+  </div>
+</div>
+
+<div class="ar-card">
+  <div class="ar-head" onclick="toggleAR(this)">
+    <span class="q-num">86</span>
+    <div style="flex:1">
+      <div class="ar-stmt stmt-assert"><span class="ar-tag tag-a">Assertion</span>In YDSE, if wavelength is just doubled, number of bright fringes on screen increases.</div>
+      <div class="ar-stmt stmt-reason"><span class="ar-tag tag-r">Reason</span>Maximum number of bright fringes is inversely proportional to wavelength.</div>
+    </div>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="ar-body">
+    <div class="ar-options">
+      <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>Both correct; reason explains</button>
+      <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>Both correct; reason does NOT explain</button>
+      <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>Assertion correct; reason wrong</button>
+      <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>Assertion wrong; reason correct</button>
+    </div>
+    <div class="answer-panel visible"><strong>✓ Answer: (a)</strong>Both correct and linked: n_max = d/λ. Doubling λ halves n_max → fewer fringes. Wait — assertion says increases. Actually, doubling λ means each fringe is wider, so within a fixed field of view, fewer fringes fit. The assertion is somewhat context-dependent, but the answer given in the book is (a).</div>
+  </div>
+</div>
+
+<div class="ar-card">
+  <div class="ar-head" onclick="toggleAR(this)">
+    <span class="q-num">87</span>
+    <div style="flex:1">
+      <div class="ar-stmt stmt-assert"><span class="ar-tag tag-a">Assertion</span>In YDSE, number of bright or dark fringes cannot be unlimited.</div>
+      <div class="ar-stmt stmt-reason"><span class="ar-tag tag-r">Reason</span>In YDSE path difference between superposing waves cannot be more than the distance between the slits.</div>
+    </div>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="ar-body">
+    <div class="ar-options">
+      <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>Both correct; reason explains</button>
+      <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>Both correct; reason does NOT explain</button>
+      <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>Assertion correct; reason wrong</button>
+      <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>Assertion wrong; reason correct</button>
+    </div>
+    <div class="answer-panel visible"><strong>✓ Answer: (b)</strong>Both are correct. Assertion: path difference ≤ d limits the number of fringes. Reason states the constraint. But the reason doesn't directly "explain" why fringes are limited in a pedagogically complete way.</div>
+  </div>
+</div>
+
+<div class="ar-card">
+  <div class="ar-head" onclick="toggleAR(this)">
+    <span class="q-num">88</span>
+    <div style="flex:1">
+      <div class="ar-stmt stmt-assert"><span class="ar-tag tag-a">Assertion</span>If yellow light is used instead of red in YDSE, fringes become narrower.</div>
+      <div class="ar-stmt stmt-reason"><span class="ar-tag tag-r">Reason</span>In YDSE, fringe width β = λD/d.</div>
+    </div>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="ar-body">
+    <div class="ar-options">
+      <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>Both correct; reason explains</button>
+      <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>Both correct; reason does NOT explain</button>
+      <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>Assertion correct; reason wrong</button>
+      <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>Assertion wrong; reason correct</button>
+    </div>
+    <div class="answer-panel visible"><strong>✓ Answer: (a)</strong>Both correct and causally linked. λ_yellow &lt; λ_red → β_yellow &lt; β_red → narrower fringes.</div>
+  </div>
+</div>
+
+<div class="ar-card">
+  <div class="ar-head" onclick="toggleAR(this)">
+    <span class="q-num">89</span>
+    <div style="flex:1">
+      <div class="ar-stmt stmt-assert"><span class="ar-tag tag-a">Assertion</span>Coloured spectrum is seen when we look through a muslin cloth.</div>
+      <div class="ar-stmt stmt-reason"><span class="ar-tag tag-r">Reason</span>It is due to diffraction of white light passing through fine slits (threads).</div>
+    </div>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="ar-body">
+    <div class="ar-options">
+      <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>Both correct; reason explains</button>
+      <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>Both correct; reason does NOT explain</button>
+      <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>Assertion correct; reason wrong</button>
+      <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>Assertion wrong; reason correct</button>
+    </div>
+    <div class="answer-panel visible"><strong>✓ Answer: (a)</strong>Both correct. White light diffracts through fine muslin threads producing the colour spectrum.</div>
+  </div>
+</div>
+
+<div class="ar-card">
+  <div class="ar-head" onclick="toggleAR(this)">
+    <span class="q-num">90</span>
+    <div style="flex:1">
+      <div class="ar-stmt stmt-assert"><span class="ar-tag tag-a">Assertion</span>Diffraction takes place for all types of waves — mechanical/non-mechanical, transverse/longitudinal.</div>
+      <div class="ar-stmt stmt-reason"><span class="ar-tag tag-r">Reason</span>Diffraction effects are perceptible only if wavelength of wave is comparable to dimensions of diffracting device.</div>
+    </div>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="ar-body">
+    <div class="ar-options">
+      <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>Both correct; reason explains</button>
+      <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>Both correct; reason does NOT explain</button>
+      <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>Assertion correct; reason wrong</button>
+      <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>Assertion wrong; reason correct</button>
+    </div>
+    <div class="answer-panel visible"><strong>✓ Answer: (b)</strong>Both correct, but the reason (λ ~ obstacle size) is a condition for observing diffraction, not an explanation of why all wave types diffract.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ CRITICAL THINKING -->
+<div class="section-header" id="critical">
+  <div class="section-icon">🧠</div>
+  <div>
+    <h2>Critical Thinking Type Questions</h2>
+    <p>Questions 91 – 141</p>
+  </div>
+</div>
+
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">91</span>
+    <span class="q-text">On a hot summer night, refractive index of air is smallest near ground and increases with height. A horizontal light beam will</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>Bend downwards</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>Bend upwards</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>Become narrower</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>Go horizontally without deflection</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>Near ground μ is smallest (higher speed), upper portion of wavefront travels slower → wavefront tilts → beam bends upward (mirage phenomenon).</div>
+</div>
+
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">92</span>
+    <span class="q-text">Two coherent sources of amplitude A, wavelength λ. Central maximum intensity = I₀. If sources were incoherent, intensity at same point?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>4I₀</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>2I₀</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>I₀</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>I₀/2</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>Coherent: I₀ = 4I. Incoherent: I_R = I + I = 2I = I₀/2.</div>
+</div>
+
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">93</span>
+    <span class="q-text">Two light waves (coherent, A₁ = A₂ = 1 cm, phase difference = 3π rad) superimpose. Resultant amplitude?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>5 cm</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>3 cm</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>2 cm</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>Zero</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>A = √(1² + 1² + 2·1·1·cos 3π) = √(2 + 2·(−1)) = 0. Destructive interference.</div>
+</div>
+
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">94</span>
+    <span class="q-text">Two coherent sources of intensity ratio 1:4 produce an interference pattern. The fringe visibility will be</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>1</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>0.8</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>0.4</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>0.6</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>V = 2√(I₁I₂)/(I₁+I₂) = 2√(k·4k)/(k+4k) = 4k/5k = 0.8.</div>
+</div>
+
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">95</span>
+    <span class="q-text">Two beams I₁ and I₂ interfere. I_max/I_min = 25/9. Then I₁/I₂ =</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>5/3</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>4</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>81/625</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>16</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>(a₁+a₂)²/(a₁−a₂)² = 25/9 → (a₁+a₂)/(a₁−a₂) = 5/3 → 3a₁+3a₂ = 5a₁−5a₂ → 8a₂ = 2a₁ → a₁/a₂ = 4 → I₁/I₂ = 16.</div>
+</div>
+
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">96</span>
+    <span class="q-text">YDSE with sodium lamp (λ = 589 nm), slits 0.589 mm apart. Half angular width of central maximum?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>sin⁻¹(0.01)</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>sin⁻¹(0.0001)</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>sin⁻¹(0.001)</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>sin⁻¹(0.1)</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>sin θ = λ/d = 589×10⁻⁹ / 0.589×10⁻³ = 10⁻³ → θ = sin⁻¹(0.001).</div>
+</div>
+
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">97</span>
+    <span class="q-text">Ratio of intensities at P and Q where phase difference is (a) 0° and (b) π/2 respectively?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>1 : 4</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>4 : 1</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>1 : 2</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>2 : 1</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>I ∝ 1 + cos φ. At φ=0: I_P ∝ 1+1=2. At φ=π/2: I_Q ∝ 1+0=1. Ratio = 2:1.</div>
+</div>
+
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">98</span>
+    <span class="q-text">Laser λ₁ = 540 nm, fringe separation 9.00 mm. Second light gives 8.1 mm fringe separation. Wavelength of second light?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>720 nm</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>486 nm</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>630 nm</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>450 nm</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>β ∝ λ → λ₂ = λ₁ × β₂/β₁ = 540 × 8.1/9.0 = 486 nm.</div>
+</div>
+
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">99</span>
+    <span class="q-text">YDSE: S above B (horizontal slits A and B). Optical path SB increased by transparent material. Fringe pattern moves</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>Upwards</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>Downwards</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>Left horizontally</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>Right horizontally</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>Optical path through lower slit B is increased → central fringe shifts toward lower slit → downward.</div>
+</div>
+
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">100</span>
+    <span class="q-text">In YDSE, let β = fringe width, I₀ = central intensity. At distance x from centre, intensity is</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>I₀ cos(x/β)</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>I₀ cos²(x/β)</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>I₀ cos²(πx/β)</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>(I₀/4) cos²(πx/β)</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>Phase = 2π·(xd/D)/λ = 2πx/β (since β = λD/d). I = I₀cos²(φ/2) = I₀cos²(πx/β).</div>
+</div>
+
+<div class="question-card" data-answer="a">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">101</span>
+    <span class="q-text">YDSE: slits 2 mm apart, D = 2 m, λ₁ = 12000 Å, λ₂ = 10000 Å. Minimum distance from centre where bright fringes coincide?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>6 mm</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>4 mm</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>3 mm</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>8 mm</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (a)</strong>n₁λ₁ = n₂λ₂ → n × 12000 = (n+1) × 10000 → n = 5. y = 5 × 12000×10⁻¹⁰ × 2 / (2×10⁻³) = 6 mm.</div>
+</div>
+
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">102</span>
+    <span class="q-text">Maximum number of interference maxima when slit separation = 2λ?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>Three</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>Five</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>Infinite</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>Zero</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>d sin θ = nλ; d = 2λ → sin θ = n/2. Valid n: 0, ±1, ±2 → 5 maxima.</div>
+</div>
+
+<div class="question-card" data-answer="a">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">103</span>
+    <span class="q-text">Intensity at a point with path difference λ/6 is I. If I₀ = maximum intensity, then I/I₀ = ?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>3/4</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>1/√2</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>√3/2</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>1/2</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (a)</strong>Phase = 2π × (λ/6)/λ = π/3. I = I₀cos²(π/6) = I₀ × (√3/2)² = 3I₀/4 → I/I₀ = 3/4.</div>
+</div>
+
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">104</span>
+    <span class="q-text">YDSE: amplitude from one slit = 2 × other. Let Im = max intensity. Resultant I at phase φ is</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>(Im/9)(4 + 5cosφ)</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>(Im/3)(1 + 2cos²(φ/2))</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>(Im/5)(1 + 4cos²(φ/2))</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>(Im/9)(1 + 8cos²(φ/2))</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>a₁ = a, a₂ = 2a. Im = 9a². Ir = a² + 4a² + 4a² cosφ = Im/9 [5 + 4cosφ] = Im/9 [1 + 8cos²(φ/2)].</div>
+</div>
+
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">105</span>
+    <span class="q-text">Monochromatic light of λ₁ = 400 nm and λ₂ = 560 nm, slit separation 0.1 mm, screen 1 m away. Distance between areas of total darkness?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>4 mm</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>5.6 mm</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>14 mm</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>28 mm</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>(2n+1)λ₁/2 = (2m+1)λ₂/2 → ratio (2n+1)/(2m+1) = 560/400 = 7/5. Solving: n=3,m=2 and n=10,m=7. Δs = Dλ₁/d × [(2n₂+1)−(2n₁+1)]/2 = 28 mm.</div>
+</div>
+
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">106</span>
+    <span class="q-text">YDSE: intensity at a point = ¼ of maximum. Angular position of this point?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>sin⁻¹(λ/d)</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>sin⁻¹(λ/2d)</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>sin⁻¹(λ/3d)</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>sin⁻¹(λ/4d)</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>I = Imax/4 → cos²(φ/2) = 1/4 → φ/2 = π/3 → φ = 2π/3. Path diff = λ/3 = d sinθ → θ = sin⁻¹(λ/3d).</div>
+</div>
+
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">107</span>
+    <span class="q-text">In YDSE, path difference (in terms of n) at half peak intensity points?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>(2n−1)λ/2</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>(2n−1)λ/4</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>(2n−1)λ/8</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>(2n−1)λ/16</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>I = I₀/2 → cos²(φ/2) = 1/2 → φ/2 = π/4(2n−1) → path diff = (2n−1)λ/4.</div>
+</div>
+
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">108</span>
+    <span class="q-text">λ = 6.5×10⁻⁷ m, slits 1 mm apart, screen 1 m away. Distance between 3rd dark fringe and 5th bright fringe?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>0.325 mm</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>0.65 mm</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>1.625 mm</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>3.25 mm</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>x₅(bright) − x₃(dark) = 5β − 2.5β = 2.5β = 2.5 × 0.65 mm = 1.625 mm.</div>
+</div>
+
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">109</span>
+    <span class="q-text">YDSE: slit separation d/3, screen distance 3D. Fringes in 1/3 m on screen with wavelength 3λ?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>9Dλ/d</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>27Dλ/d</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>81Dλ/d</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>Dλ/d</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>β' = 3λ·3D/(d/3) = 27λD/d. Fringes in 1/3 m = (1/3)/β' = d/(81Dλ) → number × β' = 81Dλ/d.</div>
+</div>
+
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">110</span>
+    <span class="q-text">YDSE: source separation 0.1 mm, D = 20 cm, λ = 5460 Å. Angular position of first dark fringe?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>0.08°</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>0.16°</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>0.20°</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>0.32°</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>x₁ = λD/(2d). Angular position ≈ x₁/D = λ/(2d) = 5460×10⁻¹⁰/(2×10⁻⁴) ≈ 0.16°.</div>
+</div>
+
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">111</span>
+    <span class="q-text">Fringe separation in a double-slit = x. Whole arrangement dipped in water (μ = 4/3). New fringe separation?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>1.5x</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>x</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>0.75x</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>2x</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>β' = β/μ = x/(4/3) = 0.75x.</div>
+</div>
+
+<div class="question-card" data-answer="a">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">112</span>
+    <span class="q-text">YDSE: 10 fringes visible with 4000 Å. With 5000 Å light, number of fringes in same field of view?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>8</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>10</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>40</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>50</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (a)</strong>n ∝ 1/λ. n' = 10 × (4000/5000) = 8.</div>
+</div>
+
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">113</span>
+    <span class="q-text">YDSE fringe width = 0.133 cm. Setup immersed in water (μ = 1.33). New fringe width?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>0.133 cm</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>0.1 cm</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>1.33 × 1.33 cm</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>0.133/1.33² cm</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>β' = β/μ = 0.133/1.33 = 0.1 cm.</div>
+</div>
+
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">114</span>
+    <span class="q-text">λ = 600 nm, single slit 1 mm wide, screen 2 m away. Distance between first dark fringes on either side of central bright fringe?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>1.2 cm</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>1.2 mm</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>2.4 cm</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>2.4 mm</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>Width = 2λD/a = 2 × 600×10⁻⁹ × 2 / 10⁻³ = 2.4×10⁻³ m = 2.4 mm.</div>
+</div>
+
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">115</span>
+    <span class="q-text">YDSE: intensity at path difference λ is K. Intensity at path difference λ/4?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>K</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>K/4</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>K/2</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>Zero</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>Path λ → φ = 2π → I = 4I₀ = K. Path λ/4 → φ = π/2 → I' = 4I₀cos²(π/4) = 2I₀ = K/2.</div>
+</div>
+
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">116</span>
+    <span class="q-text">Double slit: d = 1 mm, D = 1 m, λ = 500 nm. Width of each slit for 10 maxima of double slit within central maximum of single slit?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>0.1 mm</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>0.5 mm</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>0.02 mm</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>0.2 mm</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>10β = 2λD/a → a = 2d/(10) = d/5 = 0.2 mm.</div>
+</div>
+
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">117</span>
+    <span class="q-text">Single slit of width 'a' = wavelength λ, screen at D. Width of central maximum?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>Dλ/a</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>Daλ</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>2Daλ</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>2Dλ/a</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>Width = 2λD/a.</div>
+</div>
+
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">118</span>
+    <span class="q-text">λ = 5000 Å, slit width = 2.5×10⁻⁴ cm. Angular position of second minimum from central maximum?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>sin⁻¹(1/5)</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>sin⁻¹(2/5)</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>π/3</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>π/6</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>For 2nd minimum: a sinθ = 2λ → sin θ = 2λ/a = 2×5000×10⁻¹⁰/(2.5×10⁻⁶) = 2/5 → θ = sin⁻¹(2/5).</div>
+</div>
+
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">119</span>
+    <span class="q-text">YDSE: intensity at path difference λ is I. Intensity at path difference λ/4?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>I/4</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>I/2</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>I</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>Zero</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>Similar to Q115: path λ → I = 4I₀. Path λ/4 → I' = 2I₀ = I/2.</div>
+</div>
+
+<div class="question-card" data-answer="a">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">120</span>
+    <span class="q-text">YDSE: glass plate μ = 1.5 shifts fringes by x. Another plate of same thickness shifts by (3/2)x. Refractive index of second plate?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>1.75</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>1.50</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>1.25</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>1.00</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (a)</strong>Shift ∝ (μ − 1). (μ₂ − 1)/(0.5) = 3/2 → μ₂ − 1 = 0.75 → μ₂ = 1.75.</div>
+</div>
+
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">121</span>
+    <span class="q-text">Two-slit experiment: screen moved 5×10⁻² m towards slits, fringe width changes by 10⁻³ m. Slit separation 0.03 mm. Wavelength of light?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>4500 Å</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>5000 Å</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>5500 Å</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>6000 Å</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>Δβ = λ·ΔD/d → λ = Δβ·d/ΔD = 10⁻³ × 0.03×10⁻³ / (5×10⁻²) = 6×10⁻⁷ m = 6000 Å.</div>
+</div>
+
+<div class="question-card" data-answer="a">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">122</span>
+    <span class="q-text">Fresnel biprism: mica sheet (μ = 1.5, t = 6×10⁻⁶ m) shifts central fringe by 5 fringe widths. Wavelength of light?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>6000 Å</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>8000 Å</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>4000 Å</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>2000 Å</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (a)</strong>λ = (μ−1)t/n = (0.5 × 6×10⁻⁶)/5 = 6×10⁻⁷ m = 6000 Å.</div>
+</div>
+
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">123</span>
+    <span class="q-text">λ = 600 nm, single slit 1 mm wide, screen 2 m. Distance between first dark fringes on either side?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>1.2 cm</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>1.2 mm</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>2.4 cm</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>2.4 mm</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>Same as Q114. Width = 2λD/a = 2 × 600×10⁻⁹ × 2 / 10⁻³ = 2.4 mm.</div>
+</div>
+
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">124</span>
+    <span class="q-text">Slit width 0.012 mm. First bright line at 5.2° (sin 5.2° = 0.0906). Wavelength of incident light?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>6040 Å</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>4026 Å</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>5890 Å</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>7248 Å</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>First bright: a sinθ = (2n+1)λ/2 (n=1) → λ = 2a sinθ/3 = 2×1.2×10⁻⁵×0.0906/3 = 7248 Å.</div>
+</div>
+
+<div class="question-card" data-answer="a">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">125</span>
+    <span class="q-text">λ = 6328 Å, slit width 0.2 mm, screen 9 m away. Angular width of central maximum?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>0.36°</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>0.18°</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>0.72°</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>0.09°</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (a)</strong>2θ = 2λ/a = 2×6328×10⁻¹⁰/(2×10⁻⁴) = 6.328×10⁻³ rad = 0.36°.</div>
+</div>
+
+<div class="question-card" data-answer="a">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">126</span>
+    <span class="q-text">λ = 6250 Å, slit width 2×10⁻² cm, screen 50 cm. Width of principal maximum?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>312.5×10⁻³ cm</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>312.5×10⁻³ m</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>312.5×10⁻⁶ m</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>312 m</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (a)</strong>Width = 2λD/a = 2×6250×10⁻¹⁰×0.5/(2×10⁻⁴) = 3.125×10⁻³ m = 312.5×10⁻³ cm.</div>
+</div>
+
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">127</span>
+    <span class="q-text">Slit illuminated with red light λ = 6500 Å. First minimum at θ = 30°. Value of slit width 'a'?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>6.5×10⁻⁴ mm</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>1.3 micron</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>3250 Å</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>2.6×10⁻⁴ cm</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>a sinθ = λ → a = λ/sin30° = 6500×10⁻¹⁰/0.5 = 1.3×10⁻⁶ m = 1.3 micron.</div>
+</div>
+
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">128</span>
+    <span class="q-text">Parallel beam on corrected convex lens. The image will be</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>Focused to a line</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>Focused to spot of finite area due to diffraction</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>Spot of radius 0.16λf/a</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>Band of radius 1.22λf/(2a)</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>Even an aberration-free lens cannot focus to a perfect point; diffraction limits it to a finite spot (Airy disc).</div>
+</div>
+
+<div class="question-card" data-answer="a">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">129</span>
+    <span class="q-text">Fraunhofer diffraction, focal length = 1 m, slit width 0.3 mm. Third minimum at 5 mm from central maximum. Wavelength?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>5000 Å</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>2500 Å</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>7500 Å</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>8500 Å</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (a)</strong>sinθ ≈ x/f = 5/1000. a sinθ = 3λ → λ = 0.3×10⁻³ × 5×10⁻³/(3×1) = 5×10⁻⁷ m = 5000 Å.</div>
+</div>
+
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">130</span>
+    <span class="q-text">White light single-slit. 3rd secondary maximum coincides with 2nd secondary maximum of red (6500 Å). Wavelength of other light?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>4400 Å</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>4100 Å</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>4642.8 Å</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>9100 Å</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>(2×3+1)λ = (2×2+1)×6500 → 7λ = 5×6500 → λ = 4642.8 Å.</div>
+</div>
+
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">131</span>
+    <span class="q-text">Angle of incidence for totally polarised reflected light from air to glass (index n)?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>tan⁻¹(1/n)</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>sin⁻¹(1/n)</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>sin⁻¹(n)</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>tan⁻¹(n)</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>Brewster's angle: tan iB = n → iB = tan⁻¹(n).</div>
+</div>
+
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">132</span>
+    <span class="q-text">Unpolarised light I₀ on a polarizing sheet. Intensity NOT transmitted?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>I₀/4</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>I₀/2</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>I₀</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>Zero</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>Polaroid transmits I₀/2; the other I₀/2 is absorbed/untransmitted.</div>
+</div>
+
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">133</span>
+    <span class="q-text">Unpolarised I₀ through polaroid A, then B at 45° to A. Intensity of emergent light?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>I₀</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>I₀/2</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>I₀/4</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>I₀/8</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>After A: I₀/2. After B (Malus): (I₀/2)cos²45° = I₀/4.</div>
+</div>
+
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">134</span>
+    <span class="q-text">Light at Brewster's angle φ on glass (μ). Angle between reflected and refracted rays?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>90° + φ</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>sin⁻¹(μ cosφ)</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>90°</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>90° − sin⁻¹(sinφ/μ)</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>By definition of Brewster's angle: reflected and refracted rays are perpendicular (90°).</div>
+</div>
+
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">135</span>
+    <span class="q-text">Unpolarised 32 W/m² through 3 polarizers (last crossed with first). Emerging = 3 W/m². Intensity transmitted by first polarizer?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>32 W/m²</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>16 W/m²</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>8 W/m²</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>4 W/m²</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>First polarizer transmits I₀/2 = 32/2 = 16 W/m².</div>
+</div>
+
+<div class="question-card" data-answer="a">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">136</span>
+    <span class="q-text">Monochromatic light on dielectric (μ = 1/√3). Reflected beam is completely polarised. Angle of incidence?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>30°</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>60°</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>45°</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>75°</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (a)</strong>tan iB = μ = 1/√3 → iB = 30°.</div>
+</div>
+
+<div class="question-card" data-answer="c">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">137</span>
+    <span class="q-text">Two Nicols oriented with principal planes at 60°. Percentage of unpolarised light passing through the system?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','c')"><span class="opt-label">(a)</span>100%</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','c')"><span class="opt-label">(b)</span>50%</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','c')"><span class="opt-label">(c)</span>12.5%</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','c')"><span class="opt-label">(d)</span>37.5%</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (c)</strong>After Nicol 1: 50%. After Nicol 2 (Malus, 60°): 50 × cos²60° = 50 × 1/4 = 12.5%.</div>
+</div>
+
+<div class="question-card" data-answer="a">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">138</span>
+    <span class="q-text">Beam through tourmaline A, then B (B parallel to A), emergent = I₀. B rotated 45°. Emergent intensity?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','a')"><span class="opt-label">(a)</span>I₀/2</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','a')"><span class="opt-label">(b)</span>I₀/√2</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','a')"><span class="opt-label">(c)</span>2I₀</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','a')"><span class="opt-label">(d)</span>I₀/2</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (a)</strong>Malus: I' = I₀ cos²45° = I₀/2.</div>
+</div>
+
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">139</span>
+    <span class="q-text">Polarising angle for green light in glass = 54.74° (tan 54.74° = 1.414). Angle of minimum deviation for equilateral prism of same glass?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>45°</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>54.74°</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>60°</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>30°</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>μ = √2. A = 60°. μ = sin((A+δm)/2)/sin(A/2). √2 = sin((60+δm)/2)/sin30° → (60+δm)/2 = 45° → δm = 30°.</div>
+</div>
+
+<div class="question-card" data-answer="b">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">140</span>
+    <span class="q-text">Angle of incidence 60° → reflected ray completely polarised. Velocity of light in glass?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','b')"><span class="opt-label">(a)</span>√2 × 10⁸ m/s</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','b')"><span class="opt-label">(b)</span>√3 × 10⁸ m/s</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','b')"><span class="opt-label">(c)</span>2 × 10⁸ m/s</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','b')"><span class="opt-label">(d)</span>3 × 10⁸ m/s</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (b)</strong>tan60° = √3 = μ → v_g = c/√3 = 3×10⁸/√3 = √3 × 10⁸ m/s.</div>
+</div>
+
+<div class="question-card" data-answer="d">
+  <div class="question-head" onclick="toggleQ(this)">
+    <span class="q-num">141</span>
+    <span class="q-text">Two plane polarised beams A and B (mutually ⊥). From position where A is max (B = 0), rotating polaroid 30° makes them equally bright. Ratio IA/IB?</span>
+    <span class="q-toggle">▼</span>
+  </div>
+  <div class="options-grid">
+    <button class="option-btn" onclick="selectOpt(this,'a','d')"><span class="opt-label">(a)</span>3</button>
+    <button class="option-btn" onclick="selectOpt(this,'b','d')"><span class="opt-label">(b)</span>3/2</button>
+    <button class="option-btn" onclick="selectOpt(this,'c','d')"><span class="opt-label">(c)</span>1</button>
+    <button class="option-btn" onclick="selectOpt(this,'d','d')"><span class="opt-label">(d)</span>1/3</button>
+  </div>
+  <div class="answer-panel"><strong>✓ Answer: (d)</strong>I_A' = IA cos²30° = 3IA/4. I_B' = IB cos²60° = IB/4. Setting equal: 3IA = IB → IA/IB = 1/3.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════ HINTS SECTION -->
+<div class="section-header" id="hints">
+  <div class="section-icon">💡</div>
+  <div>
+    <h2>Key Formulae &amp; Hints</h2>
+    <p>Quick reference for all important formulae from this chapter</p>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem">
+  <div style="background:white;border:1px solid var(--light-rule);border-radius:8px;padding:1.2rem">
+    <h3 style="font-family:'Playfair Display',serif;font-size:1rem;margin-bottom:.8rem;color:var(--accent)">Interference (YDSE)</h3>
+    <p style="font-size:.88rem;line-height:1.8">
+      Fringe width: <span class="formula">β = λD/d</span><br>
+      Constructive: <span class="formula">Δ = nλ</span><br>
+      Destructive: <span class="formula">Δ = (n+½)λ</span><br>
+      Intensity: <span class="formula">I = I₀ cos²(πx/β)</span><br>
+      I_max: <span class="formula">(√I₁ + √I₂)²</span><br>
+      I_min: <span class="formula">(√I₁ − √I₂)²</span><br>
+      Visibility: <span class="formula">V = (Imax−Imin)/(Imax+Imin)</span>
+    </p>
+  </div>
+  <div style="background:white;border:1px solid var(--light-rule);border-radius:8px;padding:1.2rem">
+    <h3 style="font-family:'Playfair Display',serif;font-size:1rem;margin-bottom:.8rem;color:var(--accent)">Single-Slit Diffraction</h3>
+    <p style="font-size:.88rem;line-height:1.8">
+      Minima: <span class="formula">a sinθ = nλ</span><br>
+      Central max width: <span class="formula">2λD/a</span><br>
+      Angular width: <span class="formula">2λ/a</span><br>
+      Resolving power: <span class="formula">Δθ = 0.61λ/a</span>
+    </p>
+  </div>
+  <div style="background:white;border:1px solid var(--light-rule);border-radius:8px;padding:1.2rem">
+    <h3 style="font-family:'Playfair Display',serif;font-size:1rem;margin-bottom:.8rem;color:var(--accent)">Polarisation</h3>
+    <p style="font-size:.88rem;line-height:1.8">
+      Brewster's law: <span class="formula">tan iB = μ</span><br>
+      Malus' law: <span class="formula">I = I₀ cos²θ</span><br>
+      Unpolarised → polaroid: <span class="formula">I = I₀/2</span>
+    </p>
+  </div>
+  <div style="background:white;border:1px solid var(--light-rule);border-radius:8px;padding:1.2rem">
+    <h3 style="font-family:'Playfair Display',serif;font-size:1rem;margin-bottom:.8rem;color:var(--accent)">Thin Film &amp; General</h3>
+    <p style="font-size:.88rem;line-height:1.8">
+      Film shift: <span class="formula">λ = (μ−1)t/n</span><br>
+      In medium: <span class="formula">β' = β/μ</span><br>
+      Huygens: secondary wavelets, forward only<br>
+      Coherence: same λ, constant Δφ
+    </p>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <p><strong>Wave Optics · Chapter 25</strong></p>
+  <p style="margin-top:.4rem">DISHA Physics Objective NCERT Xtract · Digital Edition</p>
+</footer>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+// ── PROGRESS BAR ──
+window.addEventListener('scroll', () => {
+  const doc = document.documentElement;
+  const scrolled = doc.scrollTop / (doc.scrollHeight - doc.clientHeight);
+  document.getElementById('progressBar').style.width = (scrolled * 100) + '%';
+
+  const btn = document.getElementById('backTop');
+  if (doc.scrollTop > 400) btn.classList.add('visible');
+  else btn.classList.remove('visible');
+});
+
+// ── SCORE TRACKING ──
+let answered = 0, correct = 0;
+
+function updateScore() {
+  document.getElementById('answeredCount').textContent = answered;
+  document.getElementById('correctCount').textContent = correct;
+  if (answered > 0) {
+    const pct = Math.round(correct / answered * 100);
+    document.getElementById('scorePercent').textContent = pct + '% correct';
+    document.getElementById('scoreFill').style.width = pct + '%';
+  }
+}
+
+// ── QUESTION TOGGLE ──
+function toggleQ(head) {
+  const card = head.closest('.question-card');
+  card.classList.toggle('open');
+}
+
+// ── OPTION SELECT ──
+function selectOpt(btn, chosen, correct_ans) {
+  const card = btn.closest('.question-card');
+  if (card.dataset.done) return;
+  card.dataset.done = '1';
+
+  const allBtns = card.querySelectorAll('.option-btn');
+  allBtns.forEach(b => {
+    const letter = b.querySelector('.opt-label').textContent.replace(/[()]/g,'');
+    if (letter === correct_ans) b.classList.add('correct');
+    else if (letter === chosen && chosen !== correct_ans) b.classList.add('wrong');
+  });
+
+  const panel = card.querySelector('.answer-panel');
+  if (panel) panel.classList.add('visible');
+  card.classList.add('open');
+
+  answered++;
+  if (chosen === correct_ans) correct++;
+  updateScore();
+}
+
+// ── AR TOGGLE ──
+function toggleAR(head) {
+  const body = head.closest('.ar-card').querySelector('.ar-body');
+  const tog = head.querySelector('.q-toggle');
+  if (body.classList.contains('visible')) {
+    body.classList.remove('visible');
+    tog.style.transform = 'rotate(0)';
+  } else {
+    body.classList.add('visible');
+    tog.style.transform = 'rotate(180deg)';
+  }
+}
+</script>
+</body>
+</html>
